@@ -8,7 +8,7 @@
  *
  */
 import type { TelegramUserInterface } from "@app/types/databases.type";
-import configs from "@configs/config";
+import configs from "../configs/config";
 import lowdb from "lowdb";
 import lowdbFileSync from "lowdb/adapters/FileSync";
 

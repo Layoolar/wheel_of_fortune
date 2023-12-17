@@ -7,7 +7,8 @@
  * @license: MIT License
  *
  */
-import bot from "@app/functions/telegraf";
+import bot from "./telegraf";
+import { Context } from "vm";
 
 /**
  * hears: any taxt
@@ -16,7 +17,7 @@ import bot from "@app/functions/telegraf";
  *
  */
 const text = async (): Promise<void> => {
-	bot.on("text", (ctx) => {
+	bot.on("text", (ctx: Context) => {
 		ctx.telegram.sendMessage(ctx.message.chat.id, `Your text --> ${ctx.update.message.text}`);
 	});
 };

@@ -5,9 +5,11 @@ module.exports = {
 	},
 
 	"telegram": { // from @botfather on telegram
-		username: "BOT_USERNAME",
-		token: "BOT_TOKEN",
+		username: "wheel_o_fortune_bot",
+		token: "6560422262:AAGUqLM5-AkmtZLX03hSJRvo-IEPIwKF6-0",
 	},
+
+	"weblink": "https://657b86c8890aec3975da5764--magenta-halva-b570c2.netlify.app/",
 
 	mode: "poll", // or webhook
 	webhook: {

@@ -8,7 +8,7 @@
  *
  */
 import bot from "./telegraf";
-import config from "@configs/config";
+import config from "../configs/config";
 import fs from "fs";
 import localtunnel from "localtunnel";
 
@@ -25,9 +25,12 @@ const launchSelfSigned = async (webhookUrl: string, secretPath: string) => {
 		key: pk,
 		cert: cert,
 	};
+	const tunnel = await localtunnel({ port });
 	await bot.launch({
 		webhook: {
-			tlsOptions,
+			// tlsOptions,
+
+			domain: tunnel.url,
 			hookPath: secretPath,
 			port: port,
 		},

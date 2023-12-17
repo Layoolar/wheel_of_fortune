@@ -1,5 +1,5 @@
-import * as command from "@app/functions/commands";
-import * as hears from "@app/functions/hears";
+import * as command from "../functions/commands";
+import * as hears from "../functions/hears";
 
 /**
  * Start bot

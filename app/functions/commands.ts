@@ -7,10 +7,11 @@
  * @license: MIT License
  *
  */
-import bot from "@app/functions/telegraf";
-import * as databases from "@app/functions/databases";
-import config from "@configs/config";
+import bot from "./telegraf";
+import * as databases from "./databases";
+import config from "../configs/config";
 import { launchPolling, launchWebhook } from "./launcher";
+import { Context } from "vm";
 
 /**
  * command: /quit
@@ -19,7 +20,7 @@ import { launchPolling, launchWebhook } from "./launcher";
  *
  */
 const quit = async (): Promise<void> => {
-	bot.command("quit", (ctx) => {
+	bot.command("quit", (ctx: Context) => {
 		ctx.telegram.leaveChat(ctx.message.chat.id);
 		ctx.leaveChat();
 	});
@@ -32,7 +33,7 @@ const quit = async (): Promise<void> => {
  *
  */
 const sendPhoto = async (): Promise<void> => {
-	bot.command("photo", (ctx) => {
+	bot.command("photo", (ctx: Context) => {
 		ctx.replyWithPhoto("https://picsum.photos/200/300/");
 	});
 };
@@ -44,10 +45,12 @@ const sendPhoto = async (): Promise<void> => {
  *
  */
 const start = async (): Promise<void> => {
-	bot.start((ctx) => {
+	bot.start((ctx: Context) => {
 		databases.writeUser(ctx.update.message.from);
 
-		ctx.telegram.sendMessage(ctx.message.chat.id, `Welcome! Try send /photo command or write any text`);
+		ctx.reply("Wecome", {
+			reply_markup: { inline_keyboard: [[{ text: "web app", url: config.weblink }]] },
+		});
 	});
 };
 
