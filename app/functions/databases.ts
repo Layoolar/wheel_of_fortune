@@ -7,15 +7,20 @@
  * @license: MIT License
  *
  */
-import type { TelegramUserInterface } from "@app/types/databases.type";
+import type { TelegramUserInterface, TelegramSpinInterface } from "@app/types/databases.type";
 import configs from "../configs/config";
 import lowdb from "lowdb";
 import lowdbFileSync from "lowdb/adapters/FileSync";
 
-const databases = { users: lowdb(new lowdbFileSync<{ users: TelegramUserInterface[] }>(configs.databases.users)) };
+const databases = {
+	users: lowdb(new lowdbFileSync<{ users: TelegramUserInterface[] }>(configs.databases.users)),
+	spins: lowdb(new lowdbFileSync<{ spins: TelegramSpinInterface[] }>(configs.databases.spins)),
+};
 
 databases.users = lowdb(new lowdbFileSync(configs.databases.users));
 databases.users.defaults({ users: [] }).write();
+databases.spins = lowdb(new lowdbFileSync(configs.databases.spins));
+databases.spins.defaults({ spins: [] }).write();
 
 /**
  * writeUser()
@@ -29,6 +34,7 @@ databases.users.defaults({ users: [] }).write();
  * @param { TelegramUserInterface } json - telegram user object
  *
  */
+
 const writeUser = async (json: TelegramUserInterface): Promise<void> => {
 	const user_id = databases.users.get("users").find({ id: json.id }).value();
 
@@ -39,5 +45,12 @@ const writeUser = async (json: TelegramUserInterface): Promise<void> => {
 	}
 };
 
-export { databases, writeUser };
+const writeSpin = async (json: TelegramSpinInterface): Promise<void> => {
+	const user_id = databases.users.get("users").find({ id: json.user_id }).value();
+	if (user_id) {
+		databases.spins.get("spins").push(json).write();
+	}
+};
+
+export { databases, writeUser, writeSpin };
 export default databases;

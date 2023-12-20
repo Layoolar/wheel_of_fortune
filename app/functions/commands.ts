@@ -47,9 +47,37 @@ const sendPhoto = async (): Promise<void> => {
 const start = async (): Promise<void> => {
 	bot.start((ctx: Context) => {
 		databases.writeUser(ctx.update.message.from);
+		// console.log(ctx.update.message.from);
 
-		ctx.reply("Wecome", {
-			reply_markup: { inline_keyboard: [[{ text: "web app", url: config.weblink }]] },
+		// Check for Daily Play limit
+		function getSpinData() {
+			const today = new Date();
+			const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today
+				.getDate()
+				.toString()
+				.padStart(2, "0")}`;
+
+			const spinData = databases.databases.spins
+				.get("spins")
+				.filter((item) => {
+					const spinDate = new Date(item.spin_date);
+					const formattedSpinDate = `${spinDate.getFullYear()}-${(spinDate.getMonth() + 1)
+						.toString()
+						.padStart(2, "0")}-${spinDate.getDate().toString().padStart(2, "0")}`;
+					return item.user_id === ctx.update.message.from.id && formattedSpinDate === formattedToday;
+				})
+				.value();
+
+			return spinData;
+		}
+		const spinCount = getSpinData().length;
+		if (spinCount >= 2) {
+			ctx.reply("You have already played Twice. \nTry again tomorrow :)");
+			return;
+		}
+
+		ctx.reply("Welcome to Wheel of Fortune", {
+			reply_markup: { keyboard: [[{ text: "web app", web_app: { url: config.weblink } }]] },
 		});
 	});
 };

@@ -15,5 +15,6 @@ import * as hears from "../functions/hears";
 	await command.start();
 	await command.sendPhoto();
 	await hears.text();
+	await hears.message();
 	await command.launch();
 })();

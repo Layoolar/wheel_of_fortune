@@ -77,3 +77,9 @@ export interface TelegramUserInterface {
 	 */
 	language_code?: string;
 }
+export interface TelegramSpinInterface {
+	id: string;
+	user_id: number;
+	spin_result: string;
+	spin_date: Date;
+}
